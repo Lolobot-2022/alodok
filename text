@@ -1,0 +1,19 @@
+ //CRUD follow un utilisateur avec idToFollow
+  // app.put('/api/user/:id/follow', (req, res, next)=>{
+  //   User.findById(req.params.id)
+  //   .then((otherUser)=>{
+  //     if(!otherUser.followers.includes(req.userInfo._id)){
+  //       Promise.all([
+  //         User.updateOne({_id:req.userInfo._id},{$push: {followings:req.params.id}}),
+  //         User.updateOne({_id: otherUser._id},{$push:{followers:req.userInfo._id}})
+  //       ]).then(()=>{
+  //         res.json({message:"following user"});
+  //       })
+  //       .catch((e)=>{
+  //         res.json(e);
+  //       });
+  //     }else{
+  //       return res.json({message:"already following user"});
+  //     }
+  //   })
+  // })
