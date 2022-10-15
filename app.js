@@ -1,13 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config({path: './config/.env'});
 
 const User= require('./models/user.model');
 
-mongoose.connect('mongodb+srv://lolobot:lolo.alo22@clusteralodok.begiaw9.mongodb.net/alodok-mern?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
+mongoose.connect("mongodb+srv://"+ process.env.DB_USER_PASS +"@clusteralodok.begiaw9.mongodb.net/alodok-mern?retryWrites=true&w=majority",
+ { useNewUrlParser: true,
     useUnifiedTopology: true })
-  .then(() => console.log('Koneksyon a MongoDB reyisi !'))
-  .catch(() => console.log('Koneksyon a MongoDB echwe !'));
+ .then(() => console.log('Koneksyon a MongoDB reyisi !'))
+ .catch(() => console.log('Koneksyon a MongoDB echwe !'));
 
 const app = express();
 
