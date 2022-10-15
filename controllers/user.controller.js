@@ -6,6 +6,7 @@ exports.createUser = (req, res, next) => {
     email: req.body.email,
     password:req.body.password,
     picture: req.body.picture,
+    company:req.body.company,
     bio:req.body.bio,
     followers: req.body.followers,
     following: req.body.following,
@@ -49,6 +50,7 @@ exports.modifyUser = (req, res, next) => {
     email: req.body.email,
     password:req.body.password,
     picture: req.body.picture,
+    company:req.body.company,
     bio:req.body.bio,
     followers: req.body.followers,
     following: req.body.following,
@@ -57,7 +59,7 @@ exports.modifyUser = (req, res, next) => {
   User.updateOne({_id: req.params.id}, user).then(
     () => {
       res.status(201).json({
-        message: 'Thing updated successfully!'
+        message: 'User updated successfully!'
       });
     }
   ).catch(
