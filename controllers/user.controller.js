@@ -11,7 +11,6 @@ exports.createUser = (req, res, next) => {
     email: req.body.email,
     password:req.body.password,
     picture: req.body.picture,
-    company:req.body.company,
     bio:req.body.bio,
     followers: req.body.followers,
     following: req.body.following,
@@ -55,7 +54,6 @@ exports.modifyUser = (req, res, next) => {
     email: req.body.email,
     password:req.body.password,
     picture: req.body.picture,
-    company:req.body.company,
     bio:req.body.bio,
     followers: req.body.followers,
     following: req.body.following,
@@ -123,7 +121,7 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({email: req.body.email })
       .then(user => {
           if (!user) {
               return res.status(401).json({ message: 'idantifyan w oubyen modpas ou enkorèk'});
