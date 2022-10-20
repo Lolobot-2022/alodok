@@ -1,5 +1,6 @@
 const bcrypt =require('bcrypt');
 const jwt=require('jsonwebtoken');
+const ObjectID = require("mongoose").Types.ObjectId;
 
 const User = require('../models/user.model');
 
@@ -145,4 +146,71 @@ exports.login = (req, res, next) => {
               .catch(error => res.status(500).json({ error }));
       })
       .catch(error => res.status(500).json({ error }));
+};
+
+
+//follow/unfollow
+module.exports.follow = async (req, res) => {
+  if (
+    !ObjectID.isValid(req.params.id) ||
+    !ObjectID.isValid(req.body.idToFollow)
+  )
+    return res.status(400).send("ID unknow : " + req.params.id);
+
+  try {
+    //add to the follower list
+    await User.findByIdAndUpdate(
+      req.params.id,
+      { $addToSet: { following: req.body.idToFollow } },
+      { new: true, upsert: true },
+      (err, docs) => {
+        if (!err) res.status(201).json(docs);
+        else return res.status(400).json(err);
+      }
+    ).clone();
+    //add to followwing list
+    await User.findByIdAndUpdate(
+      req.body.idToFollow,
+      { $addToSet: { followers: req.params.id } },
+      { new: true, upsert: true },
+      (err, docs) => {
+        if (err) return res.status(400).json(err);
+      }
+    ).clone();
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+};
+
+//ne plus suivre un utilisateur
+module.exports.unfollow = async (req, res) => {
+  if (
+    !ObjectID.isValid(req.params.id) ||
+    !ObjectID.isValid(req.body.idToUnfollow)
+  )
+    return res.status(400).send("ID unknow : " + req.params.id);
+
+  try {
+    //add to the follower list
+    await User.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { following: req.body.idToUnfollow } },
+      { new: true, upsert: true },
+      (err, docs) => {
+        if (!err) res.status(201).json(docs);
+        else return res.status(400).json(err);
+      }
+    ).clone();
+    //add to followwing list
+    await User.findByIdAndUpdate(
+      req.body.idToUnfollow,
+      { $pull: { followers: req.params.id } },
+      { new: true, upsert: true },
+      (err, docs) => {
+        if (err) return res.status(400).json(err);
+      }
+    ).clone();
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
 };
